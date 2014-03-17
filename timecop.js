@@ -150,9 +150,17 @@ Timecop.MockDate = function() {
   if (arguments.length > 0 || !Timecop.topOfStack()) {
     this._underlyingDate = Timecop.buildNativeDate.apply(Timecop, Array.prototype.slice.apply(arguments));
   } else {
-    var date = Timecop.topOfStack().date();
-    this._underlyingDate = Timecop.buildNativeDate.call(Timecop, date.getTime());
+    this._underlyingDate = Timecop.topOfStack().date();
   }
+  return this._underlyingDate;
+};
+
+Timecop.MockDate.now = function() {
+  var topOfStack = Timecop.topOfStack()
+  if (!topOfStack) {
+    return Timecop.NativeDate.now();
+  }
+  return topOfStack.date().getTime();
 };
 
 Timecop.MockDate.UTC = function() {
